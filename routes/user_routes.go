@@ -3,6 +3,7 @@ package routes
 import (
 	"golangapi/controllers"
 	"golangapi/middleware"
+
 	"github.com/gin-gonic/gin"
 
 	"gorm.io/gorm"
@@ -11,6 +12,8 @@ import (
 func SetupUserRoutes(router *gin.RouterGroup, db *gorm.DB) {
 	userController := controllers.NewUserController(db)
 	profileController := controllers.NewProfileController(db)
+	postController := controllers.NewPostController(db)
+	tagController := controllers.NewTagontroller(db)
 
 	protected := router.Group("/")
 	nonProtected := router.Group("/")
@@ -19,6 +22,8 @@ func SetupUserRoutes(router *gin.RouterGroup, db *gorm.DB) {
 		protected.GET("/users", userController.GetUsers)
 		protected.POST("/users/:id/profile", profileController.CreateProfile)
 		protected.GET("/users/:id/profile", profileController.GetProfile)
+		protected.POST("/users/:id/posts", postController.CreatePost)
+		protected.POST("/tags", tagController.CreateTag)
 	}
 	
 	nonProtected.GET("/users/:id", userController.GetUserByID)
