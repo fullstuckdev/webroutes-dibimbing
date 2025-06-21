@@ -23,7 +23,11 @@ func SetupUserRoutes(router *gin.RouterGroup, db *gorm.DB) {
 		protected.POST("/users/:id/profile", profileController.CreateProfile)
 		protected.GET("/users/:id/profile", profileController.GetProfile)
 		protected.POST("/users/:id/posts", postController.CreatePost)
+		protected.PUT("/users/:id/posts", postController.UpdatePost)
+		protected.DELETE("/users/:id/posts", postController.DeletePost)
 		protected.POST("/tags", tagController.CreateTag)
+		protected.PATCH("/tags/:id", tagController.UpdateTag) // parsial
+		protected.DELETE("/tags/:id", tagController.DeleteTag)
 	}
 	
 	nonProtected.GET("/users/:id", userController.GetUserByID)

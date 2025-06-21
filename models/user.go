@@ -64,8 +64,17 @@ type CreatePostRequest struct {
 	Content string `json:"content" binding:"required"`
 }
 
+type UpdatePostRequest struct {
+	Title string `json:"title" binding:"required"` // required == wajib
+	Content string `json:"content"` // optional
+}
+
 type CreateTagRequest struct {
 	Name  string `json:"name" binding:"required"`
+}
+
+type UpdateTagRequest struct {
+	Name  string `json:"name"`
 }
 
 // Base Response
