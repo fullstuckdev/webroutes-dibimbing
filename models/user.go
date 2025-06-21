@@ -38,7 +38,7 @@ type Post struct {
 	ExpiresAt *time.Time `json:"expires_at"`
 
 	// Many to many
-	Tags []Tag `json:"tags,omitempty" gorm:"many2many:post_tags"`
+	Tags      []Tag      `json:"tags,omitempty" gorm:"many2many:post_tags"`
 }
 
 // Tag model (many to many with post)

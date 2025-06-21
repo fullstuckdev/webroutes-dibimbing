@@ -26,6 +26,7 @@ func SetupUserRoutes(router *gin.RouterGroup, db *gorm.DB) {
 		protected.PUT("/users/:id/posts", postController.UpdatePost)
 		protected.DELETE("/users/:id/posts", postController.DeletePost)
 		protected.POST("/tags", tagController.CreateTag)
+		protected.POST("/tags/:id/posts/:post_id", tagController.AddTagToPost)
 		protected.PATCH("/tags/:id", tagController.UpdateTag) // parsial
 		protected.DELETE("/tags/:id", tagController.DeleteTag)
 	}

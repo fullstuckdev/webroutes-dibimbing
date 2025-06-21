@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"golangapi/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -106,5 +107,36 @@ func (tc *TagController) DeleteTag(c *gin.Context) {
 	c.JSON(http.StatusOK, models.APIResponse{
 		Success: true,
 		Message: "Tag deleted",
+	})
+}
+
+func (tc *TagController) AddTagToPost(c *gin.Context) {
+	tagID, _ := strconv.Atoi(c.Param("id"))
+	postID, _ := strconv.Atoi(c.Param("post_id"))
+
+	var tag models.Tag
+	var post models.Post
+
+	if err := tc.DB.First(&tag, tagID).Error; err != nil {
+		c.JSON(http.StatusNotFound, models.APIResponse{
+			Success: false,
+			Message: "Tag not found",
+		})
+		return
+	}
+
+	if err := tc.DB.First(&post, postID).Error; err != nil {
+		c.JSON(http.StatusNotFound, models.APIResponse{
+			Success: false,
+			Message: "Post not found",
+		})
+		return
+	}
+
+	tc.DB.Model(&post).Association("Tags").Append(&tag)
+
+	c.JSON(http.StatusOK, models.APIResponse{
+		Success: true,
+		Message: "Tag added to post",
 	})
 }

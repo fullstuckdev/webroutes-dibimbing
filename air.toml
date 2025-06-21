@@ -1,0 +1,7 @@
+[build]
+    cmd = "go run main.go"
+    includeExt = ["go"]
+    excludeDir = ["assets", "tmp"]
+
+[log]
+    time = true

@@ -51,6 +51,7 @@ func (ac *AuthController) Login(c *gin.Context) {
     }
 
     // Use service to login user
+    // testing123
     token, err := ac.AuthService.Login(&loginReq)
     if err != nil {
         if err.Error() == "invalid email or password" {
