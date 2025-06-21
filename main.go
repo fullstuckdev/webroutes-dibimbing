@@ -21,7 +21,8 @@ func InitializeApp() *gin.Engine {
 
 	db := config.ConnectDatabase()
 
-	db.AutoMigrate(&models.User{})
+	// auto migrate
+	db.AutoMigrate(&models.User{}, &models.Profile{})
 
 	routes.SetupRoutes(r, db)
 
