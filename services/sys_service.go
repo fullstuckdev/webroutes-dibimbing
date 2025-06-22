@@ -4,6 +4,7 @@ import (
 	// "sync"
 	"fmt"
 	"golangapi/models"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -57,4 +58,37 @@ func (ss *SysServices) CreateFile(req *models.CreateFileRequest) (string, error)
 	}
 	
 	return filepath, nil
+}
+
+func (ss *SysServices) UploadFile(filename string, src io.Reader) (any, error) {
+	const uploadDir = "uploads"
+
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		return nil, fmt.Errorf("gagal membuat folder : %v", err)
+	}
+
+	cleanFilename := filepath.Base(filename)
+	pathFolder := filepath.Join(uploadDir, cleanFilename)
+
+	dst, err := os.Create(pathFolder)
+
+	if err != nil {
+		return nil, fmt.Errorf("gagal membuat file : %v", err)
+	}
+
+	defer dst.Close()
+
+	_, err = io.Copy(dst, src)
+
+	if err != nil {
+		return nil, fmt.Errorf("gagal menyimpan file : %v", err)
+	}
+
+	response := map[string]any{
+		"message":  "File berhasil diupload!",
+		"filename": cleanFilename,
+		"path":     pathFolder,
+	}
+
+	return response, nil
 }

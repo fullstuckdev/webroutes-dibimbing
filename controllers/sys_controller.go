@@ -59,3 +59,49 @@ func (sc *SysController) CreateFile(c *gin.Context) {
 		"path": filePath,
 	})
 }
+
+func (sc *SysController) UploadFile(c *gin.Context) {
+
+	form, err := c.MultipartForm()
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Gagal membaca form data"})
+		return
+	}
+
+	files := form.File["files"]
+	if len(files) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "File tidak boleh kosong",
+		})
+		return
+	}
+
+	var uploadFiles []any
+
+	for _, file := range files {
+		src, err := file.Open()
+		if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Gagal membuka file",
+		})
+		return
+		}
+
+		response, err := sc.SysService.UploadFile(file.Filename, src)
+		
+		if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Gagal upload file",
+		})
+		return
+		}
+
+		uploadFiles = append(uploadFiles, response)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": uploadFiles,
+	})
+
+}

@@ -17,5 +17,6 @@ func SetupSysRoutes(router *gin.RouterGroup, db *gorm.DB) {
 	{
 		protected.POST("/directory", sysController.CreateDirectory)
 		protected.POST("/file", sysController.CreateFile)
+		protected.POST("/upload", sysController.UploadFile)
 	}
 }

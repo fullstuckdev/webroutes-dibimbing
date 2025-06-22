@@ -9,3 +9,9 @@ type CreateFileRequest struct {
 	FileName string `json:"file_name" binding:"required"`
 	Content string `json:"content"`
 }
+
+type FileUploadResponse struct {
+	Message string `json:"message"`
+	Filename string `json:"filename"`
+	Path string `json:"path"`
+}
